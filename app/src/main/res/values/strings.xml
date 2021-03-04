@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">McdTerdekat</string>
+    <string name="find_mcd">Find McDonal</string>
+    <string name="made_by">Made By</string>
+    <string name="made_name">D. Karimah Khomsah</string>
+    <string name="dont_have_account">"Dont have Account ? "</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="sign_in">Sign In</string>
+    <string name="have_account">"Already Have Account ? "</string>
+    <string name="register">Register</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="name">Name</string>
+    <string name="profile">Profile</string>
+    <string name="about">About</string>
+    <string name="logout">Logout</string>
+    <string name="home">Home</string>
+    <string name="about_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</string>
+    <string name="find_location">Find\nLocation</string>
+    <string name="menu_and_price"><![CDATA[Menu & Price\nList]]></string>
+</resources>
