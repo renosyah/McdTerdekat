@@ -20,4 +20,6 @@
     <string name="find_location">Cari Lokasi</string>
     <string name="menu_and_price"><![CDATA[Daftar Menu & Harga]]></string>
     <string name="login">Masuk</string>
+    <string name="hour">Jam</string>
+    <string name="minute">Menit</string>
 </resources>

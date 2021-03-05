@@ -39,7 +39,7 @@ android {
     buildTypes.each {
         it.minifyEnabled true
         it.buildConfigField "String", "SERVER_URL", "\"https://mcd-api.000webhostapp.com/\""
-        it.buildConfigField "int", "MIN_RADIUS", "5"
+        it.buildConfigField "int", "MIN_RADIUS", "3"
         it.resValue "string", "here_access_key_id", props.getProperty("here.access.key.id")
         it.resValue "string", "here_access_key_secret", props.getProperty("here.access.key.secret")
     }
