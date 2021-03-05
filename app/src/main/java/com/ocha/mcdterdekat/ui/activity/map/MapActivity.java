@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.here.sdk.core.Anchor2D;
 import com.here.sdk.core.GeoCoordinates;
 import com.here.sdk.core.Point2D;
+import com.here.sdk.core.errors.InstantiationErrorException;
 import com.here.sdk.gestures.GestureType;
 import com.here.sdk.gestures.TapListener;
 import com.here.sdk.mapviewlite.CameraObserver;
@@ -29,6 +30,12 @@ import com.here.sdk.mapviewlite.MapMarker;
 import com.here.sdk.mapviewlite.MapScene;
 import com.here.sdk.mapviewlite.MapStyle;
 import com.here.sdk.mapviewlite.MapViewLite;
+import com.here.sdk.routing.CalculateRouteCallback;
+import com.here.sdk.routing.Route;
+import com.here.sdk.routing.RoutingEngine;
+import com.here.sdk.routing.RoutingError;
+import com.here.sdk.routing.Waypoint;
+import com.ocha.mcdterdekat.BuildConfig;
 import com.ocha.mcdterdekat.R;
 import com.ocha.mcdterdekat.di.component.ActivityComponent;
 import com.ocha.mcdterdekat.di.component.DaggerActivityComponent;
@@ -40,10 +47,13 @@ import com.ocha.mcdterdekat.ui.activity.home.HomeActivity;
 import com.ocha.mcdterdekat.ui.activity.login.LoginActivity;
 import com.ocha.mcdterdekat.ui.activity.login.LoginActivityContract;
 import com.ocha.mcdterdekat.util.SerializableSave;
+import com.ocha.mcdterdekat.util.Unit;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -68,6 +78,10 @@ public class MapActivity extends AppCompatActivity implements MapActivityContrac
     private MapViewLite mapView;
     private ArrayList<MapMarker> markers = new ArrayList<>();
 
+    // deklarasi pembuat rute
+    // yg nantinya akan mengkalkulasi rute
+    private RoutingEngine routingEngine;
+
     // deklarasi service lokasi manager
     private LocationManager locationManager;
 
@@ -79,6 +93,7 @@ public class MapActivity extends AppCompatActivity implements MapActivityContrac
     private MapMarker userMarker;
 
     private ImageView userLocation;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,6 +149,15 @@ public class MapActivity extends AppCompatActivity implements MapActivityContrac
 
     // fungsi untuk menampilkan map view
     private void loadMapScene() {
+        // coba
+        try {
+
+            // inisialisasi mesin rute
+            routingEngine = new RoutingEngine();
+
+            // jika ada yg salah
+            // hiraukan
+        } catch (InstantiationErrorException ignore) { }
 
         // check kondisi pada saat map view berhasil diload
         mapView.getMapScene().loadScene(MapStyle.NORMAL_DAY, new MapScene.LoadSceneCallback() {
@@ -157,6 +181,61 @@ public class MapActivity extends AppCompatActivity implements MapActivityContrac
                 setTapGestureHandler();
             }
         });
+    }
+
+    // fungsi untuk menampilkan rute
+    private void showOnlyShortestRouting(Waypoint startWaypoint, Waypoint destinationWaypoint, Unit<Boolean> afterRouteSet){
+
+        // cek jika mesin rute kosong
+        if (routingEngine == null) {
+
+            // stop
+            return;
+        }
+
+        // buat variabel aray untuk waypoint
+        // dengan lokasi user dan tujuan sebagai isi
+        List<Waypoint> waypoints = new ArrayList<>(Arrays.asList(startWaypoint, destinationWaypoint));
+
+        // memanggil fungsi kalulasi
+        routingEngine.calculateRoute(
+                waypoints,
+                new RoutingEngine.CarOptions(),
+                new CalculateRouteCallback() {
+
+                    // pada saat berhasil dikalkulasi
+                    @Override
+                    public void onRouteCalculated(@Nullable RoutingError routingError, @Nullable List<Route> routes) {
+
+                        // jika tidak ada error dan
+                        // rute tersedia tidak null dan
+                        // data index pertama tidak null
+                        if (routingError == null && routes != null) {
+
+                            int minDistance = 0;
+                            for (Route r : routes){
+
+                                // kalkulasi menit
+                                long minute = r.getDurationInSeconds() / 60;
+
+                                // kalkulasi jam
+                                long hour = minute / 60;
+
+                                // kalkulasi jarak meter
+                                int meter = r.getLengthInMeters();
+
+                                // ubah ke kilometer
+                                int km = meter / 1000;
+
+                                // cari rute paling pendek
+                                minDistance = minDistance == 0 || km < minDistance ? km : minDistance;
+                            }
+
+                            afterRouteSet.invoke(minDistance < BuildConfig.MIN_RADIUS);
+
+                        }
+                    }
+                });
     }
 
     // fungsi untuk inisialisasi
@@ -277,38 +356,49 @@ public class MapActivity extends AppCompatActivity implements MapActivityContrac
     @Override
     public void onGetListLocation(@Nullable ArrayList<LocationModel> locations) {
 
-        // untuk setiap data array di response
-        for (LocationModel r : locations){
+        if (locations != null) {
+            // untuk setiap data array di response
+            for (LocationModel r : locations){
 
-            // akan dipanggil fungsi untuk
-            // menunjukan jarak
-            r.Distance = r.calculateDistance(userCoordinate);
+                // akan dipanggil fungsi untuk
+                // menunjukan jarak
+                r.Distance = r.calculateDistance(userCoordinate);
 
-            // memanggil fungsi untuk membuat marker lokasi
-            MapMarker m = createLocationMarker(context,r);
+                // tampilkan marker lokasi yang terdekat berdasarkan rutenya yg paling pendek
+                showOnlyShortestRouting(new Waypoint(new GeoCoordinates(userCoordinate.latitude,userCoordinate.longitude)),
+                        new Waypoint(new GeoCoordinates(r.Latitude,r.Longitude)),new Unit<Boolean>(){
 
-            // tambahkan ke array marker
-            markers.add(m);
+                            @Override
+                            public void invoke(Boolean o) {
 
-            // tampilkan marker dimap
-            mapView.getMapScene().addMapMarker(m);
-        }
+                                // memanggil fungsi untuk membuat marker lokasi
+                                MapMarker m = createLocationMarker(context,r);
 
-        // tambahkan semua data response ke array
-        // data wisata kuliner
-        locationModels.addAll(locations);
+                                // tambahkan ke array marker
+                                markers.add(m);
+
+                                // tampilkan marker dimap
+                                mapView.getMapScene().addMapMarker(m);
+                            }
+                        });
+            }
+
+            // tambahkan semua data response ke array
+            // data wisata kuliner
+            locationModels.addAll(locations);
 
 
-        // jika array tidak kosong
-        if (locationModels.size() > 0) {
+            // jika array tidak kosong
+            if (locationModels.size() > 0) {
 
-            // arahkan kamera ke marker
-            // data lokasi wisata kuliner
-            // posisi pertama
-            mapView.getCamera().setTarget(new GeoCoordinates(locationModels.get(0).Latitude,locationModels.get(0).Longitude));
+                // arahkan kamera ke marker
+                // data lokasi wisata kuliner
+                // posisi pertama
+                mapView.getCamera().setTarget(new GeoCoordinates(locationModels.get(0).Latitude,locationModels.get(0).Longitude));
 
-            // setting tingkatan zoom kamera
-            mapView.getCamera().setZoomLevel(ZOOM_LEVEL);
+                // setting tingkatan zoom kamera
+                mapView.getCamera().setZoomLevel(ZOOM_LEVEL);
+            }
         }
 
     }

@@ -27,22 +27,6 @@ public class StaticVariabel {
     // jarak antar lokasi untuk update
     public static final float LOCATION_REFRESH_DISTANCE = 0;
 
-    // status untuk disable activity
-    // ketika ingin balik ke activity sebelumnya
-    public static final int NO_NEED_TO_BACK = -1;
-
-    // status untuk balik ke activity spash screen
-    public static final int BACK_TO_SPLASH_ACTIVITY = 0;
-
-    // status untuk balik ke activity jelajah
-    public static final int BACK_TO_EXPLORE_ACTIVITY = 1;
-
-    // status untuk balik ke activity pencarian
-    public static final int BACK_TO_SEARCH_ACTIVITY = 2;
-
-    // status untuk balik ke activity detail
-    public static final int BACK_TO_DETAIL_ACTIVITY = 3;
-
     // tinggakatan standar zoom di map
     public static final int ZOOM_LEVEL = 16;
 
