@@ -228,7 +228,13 @@ public class MapActivity extends AppCompatActivity implements MapActivityContrac
                                 int km = meter / 1000;
 
                                 // cari rute paling pendek
-                                minDistance = minDistance == 0 || km < minDistance ? km : minDistance;
+                                if (km < minDistance){
+                                    minDistance = km;
+                                }
+
+                                if (minDistance == 0){
+                                    minDistance = km;
+                                }
                             }
 
                             afterRouteSet.invoke(minDistance < BuildConfig.MIN_RADIUS);
