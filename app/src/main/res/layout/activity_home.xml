@@ -97,7 +97,7 @@
                             android:layout_height="match_parent"
                             android:layout_margin="15dp"
                             android:layout_weight="1"
-                            app:srcCompat="@drawable/logo" />
+                            app:srcCompat="@drawable/price" />
 
                         <TextView
                             android:layout_width="match_parent"

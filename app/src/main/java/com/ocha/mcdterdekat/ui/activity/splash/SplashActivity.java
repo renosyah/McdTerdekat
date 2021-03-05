@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.ocha.mcdterdekat.R;
+import com.ocha.mcdterdekat.ui.activity.home.HomeActivity;
 import com.ocha.mcdterdekat.ui.activity.login.LoginActivity;
 import com.ocha.mcdterdekat.util.Unit;
 
@@ -64,7 +65,10 @@ public class SplashActivity extends AppCompatActivity {
 
                         // panggil aktivity menu utama
                         // dan selesai, hancurkan activity ini
-                        startActivity(new Intent(context, LoginActivity.class));
+                        //startActivity(new Intent(context, LoginActivity.class));
+                        //finish();
+
+                        startActivity(new Intent(context, HomeActivity.class));
                         finish();
                     }
                 }, 3000);
