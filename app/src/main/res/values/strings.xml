@@ -19,4 +19,6 @@
     <string name="find_location">Find Location</string>
     <string name="menu_and_price"><![CDATA[Menu & Price\nList]]></string>
     <string name="login">Login</string>
+    <string name="hour">Hour</string>
+    <string name="minute">Minute</string>
 </resources>

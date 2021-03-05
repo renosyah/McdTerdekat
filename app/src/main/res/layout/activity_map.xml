@@ -25,16 +25,65 @@
         <com.here.sdk.mapviewlite.MapViewLite
             android:id="@+id/map_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
+
+        </com.here.sdk.mapviewlite.MapViewLite>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/layout_route_cardview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:elevation="1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:id="@+id/route_duration_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/white"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:minHeight="50dp"
+                    android:text="6 Hr 55 (2,3 Km)"
+                    android:textColor="@color/textColorBlack"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="25dp"
+            android:elevation="2dp"
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/user_location_imageview"
-                android:layout_margin="25dp"
-                android:layout_gravity="right|bottom"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
+                android:layout_margin="5dp"
                 app:srcCompat="@drawable/location" />
-        </com.here.sdk.mapviewlite.MapViewLite>
+
+            <ImageView
+                android:id="@+id/navigation_imageview"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:layout_margin="5dp"
+                android:visibility="visible"
+                app:srcCompat="@drawable/nav_on" />
+
+        </LinearLayout>
+
     </FrameLayout>
 
 </LinearLayout>

@@ -60,7 +60,7 @@ public class HomeActivity extends AppCompatActivity {
 
                 // membuat intent untuk browsing
                 // menggunakan browser
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://mcdonalds.co.id/menu"));
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.mcdelivery.co.id/m/id/mobile/browsemenu.html"));
 
                 // tampilkan activity
                 startActivity(browserIntent);
