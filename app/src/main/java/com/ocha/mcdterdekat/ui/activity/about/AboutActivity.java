@@ -1,8 +1,5 @@
 package com.ocha.mcdterdekat.ui.activity.about;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,13 +7,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import com.ocha.mcdterdekat.R;
-import com.ocha.mcdterdekat.model.user.UserModel;
-import com.ocha.mcdterdekat.ui.activity.home.HomeActivity;
-import com.ocha.mcdterdekat.ui.activity.login.LoginActivity;
-import com.ocha.mcdterdekat.util.SerializableSave;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
-import static com.ocha.mcdterdekat.util.StaticVariabel.USER_DATA;
+import com.ocha.mcdterdekat.R;
+import com.ocha.mcdterdekat.ui.activity.home.HomeActivity;
 
 public class AboutActivity extends AppCompatActivity {
 

@@ -3,11 +3,8 @@ package com.ocha.mcdterdekat.ui.activity.map;
 import com.ocha.mcdterdekat.model.location.LocationModel;
 import com.ocha.mcdterdekat.model.location.RequestLocation;
 import com.ocha.mcdterdekat.model.response.ResponseModel;
-import com.ocha.mcdterdekat.model.user.UserModel;
 import com.ocha.mcdterdekat.service.RetrofitService;
-import com.ocha.mcdterdekat.ui.activity.login.LoginActivityContract;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;

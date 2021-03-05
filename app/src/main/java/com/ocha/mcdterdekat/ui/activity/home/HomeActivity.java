@@ -15,7 +15,6 @@ import android.view.View;
 import com.ocha.mcdterdekat.R;
 import com.ocha.mcdterdekat.ui.activity.about.AboutActivity;
 import com.ocha.mcdterdekat.ui.activity.map.MapActivity;
-import com.ocha.mcdterdekat.ui.activity.profile.ProfileActivity;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -83,8 +82,6 @@ public class HomeActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_profile:
 
-                startActivity(new Intent(context, ProfileActivity.class));
-                finish();
 
                 return true;
             case R.id.action_about:

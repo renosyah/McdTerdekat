@@ -15,7 +15,6 @@ import android.os.Handler;
 
 import com.ocha.mcdterdekat.R;
 import com.ocha.mcdterdekat.ui.activity.home.HomeActivity;
-import com.ocha.mcdterdekat.ui.activity.login.LoginActivity;
 import com.ocha.mcdterdekat.util.Unit;
 
 import static com.ocha.mcdterdekat.util.StaticVariabel.MY_PERMISSIONS_REQUEST_LOCATION;
@@ -62,11 +61,6 @@ public class SplashActivity extends AppCompatActivity {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-
-                        // panggil aktivity menu utama
-                        // dan selesai, hancurkan activity ini
-                        //startActivity(new Intent(context, LoginActivity.class));
-                        //finish();
 
                         startActivity(new Intent(context, HomeActivity.class));
                         finish();

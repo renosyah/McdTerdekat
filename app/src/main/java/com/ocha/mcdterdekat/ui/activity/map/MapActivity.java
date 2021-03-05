@@ -1,5 +1,18 @@
 package com.ocha.mcdterdekat.ui.activity.map;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,25 +20,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.media.Image;
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.here.sdk.core.Anchor2D;
 import com.here.sdk.core.GeoCoordinates;
 import com.here.sdk.core.GeoPolyline;
-import com.here.sdk.core.Metadata;
 import com.here.sdk.core.Point2D;
 import com.here.sdk.core.errors.InstantiationErrorException;
 import com.here.sdk.gestures.GestureType;
@@ -53,11 +49,7 @@ import com.ocha.mcdterdekat.di.component.DaggerActivityComponent;
 import com.ocha.mcdterdekat.di.module.ActivityModule;
 import com.ocha.mcdterdekat.model.location.LocationModel;
 import com.ocha.mcdterdekat.model.location.RequestLocation;
-import com.ocha.mcdterdekat.model.user.UserModel;
 import com.ocha.mcdterdekat.ui.activity.home.HomeActivity;
-import com.ocha.mcdterdekat.ui.activity.login.LoginActivity;
-import com.ocha.mcdterdekat.ui.activity.login.LoginActivityContract;
-import com.ocha.mcdterdekat.util.SerializableSave;
 import com.ocha.mcdterdekat.util.Unit;
 
 import org.jetbrains.annotations.NotNull;
@@ -70,7 +62,6 @@ import javax.inject.Inject;
 
 import static com.ocha.mcdterdekat.util.StaticVariabel.LOCATION_REFRESH_DISTANCE;
 import static com.ocha.mcdterdekat.util.StaticVariabel.LOCATION_REFRESH_TIME;
-import static com.ocha.mcdterdekat.util.StaticVariabel.USER_DATA;
 import static com.ocha.mcdterdekat.util.StaticVariabel.ZOOM_LEVEL;
 import static com.ocha.mcdterdekat.util.StaticVariabel.createLocationMarker;
 import static com.ocha.mcdterdekat.util.StaticVariabel.createUserMarker;

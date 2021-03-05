@@ -6,7 +6,6 @@ import com.ocha.mcdterdekat.BuildConfig;
 import com.ocha.mcdterdekat.model.location.LocationModel;
 import com.ocha.mcdterdekat.model.location.RequestLocation;
 import com.ocha.mcdterdekat.model.response.ResponseModel;
-import com.ocha.mcdterdekat.model.user.UserModel;
 
 import java.util.ArrayList;
 
@@ -22,12 +21,6 @@ public interface RetrofitService {
 
     @POST("/api/location/list_closes.php")
     public Observable<ResponseModel<ArrayList<LocationModel>>> locations(@Body RequestLocation requestLocation);
-
-    @POST("/api/user/login.php")
-    public Observable<ResponseModel<UserModel>> login(@Body UserModel user);
-
-    @POST("/api/user/add.php")
-    public Observable<ResponseModel<String>> add(@Body UserModel user);
 
     public static RetrofitService create()  {
 
