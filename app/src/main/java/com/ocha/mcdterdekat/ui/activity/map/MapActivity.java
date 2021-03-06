@@ -51,6 +51,7 @@ import com.ocha.mcdterdekat.di.module.ActivityModule;
 import com.ocha.mcdterdekat.model.location.LocationModel;
 import com.ocha.mcdterdekat.model.location.RequestLocation;
 import com.ocha.mcdterdekat.ui.activity.home.HomeActivity;
+import com.ocha.mcdterdekat.util.CustomMarker;
 import com.ocha.mcdterdekat.util.Unit;
 
 import org.jetbrains.annotations.NotNull;
@@ -64,6 +65,7 @@ import javax.inject.Inject;
 import static com.ocha.mcdterdekat.util.StaticVariabel.LOCATION_REFRESH_DISTANCE;
 import static com.ocha.mcdterdekat.util.StaticVariabel.LOCATION_REFRESH_TIME;
 import static com.ocha.mcdterdekat.util.StaticVariabel.ZOOM_LEVEL;
+import static com.ocha.mcdterdekat.util.StaticVariabel.createCustomMarker;
 import static com.ocha.mcdterdekat.util.StaticVariabel.createLocationMarker;
 import static com.ocha.mcdterdekat.util.StaticVariabel.createLocationMarkerWithText;
 import static com.ocha.mcdterdekat.util.StaticVariabel.createUserMarker;
@@ -80,8 +82,7 @@ public class MapActivity extends AppCompatActivity implements MapActivityContrac
     private Toolbar toolbar;
 
     private MapViewLite mapView;
-    private ArrayList<MapOverlay<View>> markersOverlay = new ArrayList<>();
-    private ArrayList<MapMarker> markers = new ArrayList<>();
+    private ArrayList<CustomMarker> markers = new ArrayList<>();
 
     // deklarasi flag status
     // apakah tracking user aktif
@@ -591,19 +592,16 @@ public class MapActivity extends AppCompatActivity implements MapActivityContrac
                         public void invoke(Boolean o) {
 
                             // memanggil fungsi untuk membuat marker lokasi
-                            MapOverlay<View> mapOverlay = createLocationMarkerWithText(context,r);
-
-                            // memanggil fungsi untuk membuat marker lokasi
-                            MapMarker m = createLocationMarker(context,r);
+                            CustomMarker customMarker = createCustomMarker(context,r);
 
                             // tambahkan ke array marker
-                            markers.add(m);
+                            markers.add(customMarker);
 
                             // tampilkan marker dimap
-                            mapView.getMapScene().addMapMarker(m);
+                            mapView.getMapScene().addMapMarker(customMarker.marker);
 
                             // tampilkan marker dimap
-                            mapView.addMapOverlay(mapOverlay);
+                            mapView.addMapOverlay(customMarker.markerOverlay);
 
                             // arahkan kamera ke marker
                             // data lokasi wisata kuliner
@@ -646,19 +644,11 @@ public class MapActivity extends AppCompatActivity implements MapActivityContrac
     private void removeRestaurantMarker(){
 
         // untuk setiap marker di array
-        for (MapOverlay<View> m : markersOverlay){
+        for (CustomMarker m : markers){
 
             // hilangkan marker pada map
-            mapView.removeMapOverlay(m);
-        }
-
-       markersOverlay.clear();
-
-        // untuk setiap marker di array
-        for (MapMarker m : markers){
-
-            // hilangkan marker pada map
-            mapView.getMapScene().removeMapMarker(m);
+            mapView.removeMapOverlay(m.markerOverlay);
+            mapView.getMapScene().removeMapMarker(m.marker);
         }
 
         markers.clear();

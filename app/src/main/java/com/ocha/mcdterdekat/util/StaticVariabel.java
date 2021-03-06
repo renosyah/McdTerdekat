@@ -38,6 +38,11 @@ public class StaticVariabel {
     // nama cache untuk data keyword percarian terakhir
     public static final String USER_DATA = BuildConfig.APPLICATION_ID + "_USER_DATA.CASES";
 
+
+    public static CustomMarker createCustomMarker(Context c, LocationModel location){
+        return new CustomMarker(createLocationMarkerWithText(c, location),createLocationMarker(c, location));
+    }
+
     // fungsi untuk membuat marker
     // untuk wisata kuliner dengan 3 parameter
     public static MapOverlay<View> createLocationMarkerWithText(Context c, LocationModel location){
