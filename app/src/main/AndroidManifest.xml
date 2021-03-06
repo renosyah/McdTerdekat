@@ -20,9 +20,7 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".ui.activity.map.MapActivity"></activity>
         <activity android:name=".ui.activity.about.AboutActivity" />
-        <activity android:name=".ui.activity.profile.ProfileActivity" />
         <activity android:name=".ui.activity.home.HomeActivity" />
-        <activity android:name=".ui.activity.register.RegisterActivity" />
         <activity android:name=".ui.activity.splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,7 +28,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.login.LoginActivity" />
 
         <meta-data
             android:name="com.here.sdk.access_key_id"

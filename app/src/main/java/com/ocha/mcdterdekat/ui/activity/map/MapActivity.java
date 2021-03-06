@@ -29,6 +29,7 @@ import com.here.sdk.gestures.TapListener;
 import com.here.sdk.mapviewlite.CameraObserver;
 import com.here.sdk.mapviewlite.CameraUpdate;
 import com.here.sdk.mapviewlite.MapMarker;
+import com.here.sdk.mapviewlite.MapOverlay;
 import com.here.sdk.mapviewlite.MapPolyline;
 import com.here.sdk.mapviewlite.MapPolylineStyle;
 import com.here.sdk.mapviewlite.MapScene;
@@ -64,6 +65,7 @@ import static com.ocha.mcdterdekat.util.StaticVariabel.LOCATION_REFRESH_DISTANCE
 import static com.ocha.mcdterdekat.util.StaticVariabel.LOCATION_REFRESH_TIME;
 import static com.ocha.mcdterdekat.util.StaticVariabel.ZOOM_LEVEL;
 import static com.ocha.mcdterdekat.util.StaticVariabel.createLocationMarker;
+import static com.ocha.mcdterdekat.util.StaticVariabel.createLocationMarkerWithText;
 import static com.ocha.mcdterdekat.util.StaticVariabel.createUserMarker;
 
 public class MapActivity extends AppCompatActivity implements MapActivityContract.View {
@@ -78,8 +80,8 @@ public class MapActivity extends AppCompatActivity implements MapActivityContrac
     private Toolbar toolbar;
 
     private MapViewLite mapView;
+    private ArrayList<MapOverlay<View>> markersOverlay = new ArrayList<>();
     private ArrayList<MapMarker> markers = new ArrayList<>();
-
 
     // deklarasi flag status
     // apakah tracking user aktif
@@ -589,6 +591,9 @@ public class MapActivity extends AppCompatActivity implements MapActivityContrac
                         public void invoke(Boolean o) {
 
                             // memanggil fungsi untuk membuat marker lokasi
+                            MapOverlay<View> mapOverlay = createLocationMarkerWithText(context,r);
+
+                            // memanggil fungsi untuk membuat marker lokasi
                             MapMarker m = createLocationMarker(context,r);
 
                             // tambahkan ke array marker
@@ -596,6 +601,9 @@ public class MapActivity extends AppCompatActivity implements MapActivityContrac
 
                             // tampilkan marker dimap
                             mapView.getMapScene().addMapMarker(m);
+
+                            // tampilkan marker dimap
+                            mapView.addMapOverlay(mapOverlay);
 
                             // arahkan kamera ke marker
                             // data lokasi wisata kuliner
@@ -636,6 +644,15 @@ public class MapActivity extends AppCompatActivity implements MapActivityContrac
 
     // fungsi untuk menghilangkan marker
     private void removeRestaurantMarker(){
+
+        // untuk setiap marker di array
+        for (MapOverlay<View> m : markersOverlay){
+
+            // hilangkan marker pada map
+            mapView.removeMapOverlay(m);
+        }
+
+       markersOverlay.clear();
 
         // untuk setiap marker di array
         for (MapMarker m : markers){

@@ -1,6 +1,10 @@
 package com.ocha.mcdterdekat.util;
 
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
+import android.view.View;
+import android.widget.TextView;
 
 import com.here.sdk.core.GeoCoordinates;
 import com.here.sdk.core.Metadata;
@@ -8,6 +12,7 @@ import com.here.sdk.mapviewlite.MapImage;
 import com.here.sdk.mapviewlite.MapImageFactory;
 import com.here.sdk.mapviewlite.MapMarker;
 import com.here.sdk.mapviewlite.MapMarkerImageStyle;
+import com.here.sdk.mapviewlite.MapOverlay;
 import com.ocha.mcdterdekat.BuildConfig;
 import com.ocha.mcdterdekat.model.location.LocationModel;
 
@@ -33,6 +38,19 @@ public class StaticVariabel {
     // nama cache untuk data keyword percarian terakhir
     public static final String USER_DATA = BuildConfig.APPLICATION_ID + "_USER_DATA.CASES";
 
+    // fungsi untuk membuat marker
+    // untuk wisata kuliner dengan 3 parameter
+    public static MapOverlay<View> createLocationMarkerWithText(Context c, LocationModel location){
+
+        View v = ((Activity) c).getLayoutInflater().inflate(R.layout.location_marker,null);
+        TextView textView = v.findViewById(R.id.location_name_textview);
+        textView.setText(location.Name);
+
+        GeoCoordinates geoCoordinates = new GeoCoordinates(location.Latitude,location.Longitude);
+        MapOverlay<View> mapOverlay = new MapOverlay<>(v, geoCoordinates);
+
+        return mapOverlay;
+    }
 
     // fungsi untuk membuat marker
     // untuk wisata kuliner dengan 3 parameter
