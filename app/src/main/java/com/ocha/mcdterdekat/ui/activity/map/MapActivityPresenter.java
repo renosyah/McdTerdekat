@@ -28,6 +28,7 @@ public class MapActivityPresenter implements MapActivityContract.Presenter {
     @Override
     public void getListLocation(RequestLocation requestLocation, boolean enableLoading) {
 
+
         // apakah loading digunakan
         if (enableLoading) {
 

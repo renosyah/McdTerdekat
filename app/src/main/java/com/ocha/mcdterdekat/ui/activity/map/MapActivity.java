@@ -7,6 +7,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,6 +21,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 
+import com.google.gson.Gson;
 import com.here.sdk.core.GeoCoordinates;
 import com.here.sdk.core.GeoPolyline;
 import com.here.sdk.core.Point2D;
@@ -48,6 +50,7 @@ import com.ocha.mcdterdekat.R;
 import com.ocha.mcdterdekat.di.component.ActivityComponent;
 import com.ocha.mcdterdekat.di.component.DaggerActivityComponent;
 import com.ocha.mcdterdekat.di.module.ActivityModule;
+import com.ocha.mcdterdekat.model.location.LocationData;
 import com.ocha.mcdterdekat.model.location.LocationModel;
 import com.ocha.mcdterdekat.model.location.RequestLocation;
 import com.ocha.mcdterdekat.ui.activity.home.HomeActivity;
@@ -55,13 +58,13 @@ import com.ocha.mcdterdekat.util.CustomMarker;
 import com.ocha.mcdterdekat.util.Unit;
 
 import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import static com.ocha.mcdterdekat.model.location.LocationData.getLocations;
 import static com.ocha.mcdterdekat.util.StaticVariabel.LOCATION_REFRESH_DISTANCE;
 import static com.ocha.mcdterdekat.util.StaticVariabel.LOCATION_REFRESH_TIME;
 import static com.ocha.mcdterdekat.util.StaticVariabel.ZOOM_LEVEL;
@@ -422,6 +425,9 @@ public class MapActivity extends AppCompatActivity implements MapActivityContrac
                     // jika koordinat user belun diisi
                     if (userCoordinate == null){
 
+                        // inisialisasi kordinat user
+                        userCoordinate = new GeoCoordinates(location.getLatitude(),location.getLongitude());
+
                         // panggil fungsi untuk mendaptkan
                         // lokasi wisata kuliner terdekat
                         getAllNearestLocation(new GeoCoordinates(location.getLatitude(),location.getLongitude()),true);
@@ -571,48 +577,57 @@ public class MapActivity extends AppCompatActivity implements MapActivityContrac
         });
     }
 
+    public void validateLocation(ArrayList<LocationModel> locations){
 
-    @Override
-    public void onGetListLocation(@Nullable ArrayList<LocationModel> locations) {
+        // untuk setiap data array di response
+        for (LocationModel r : locations){
 
-        if (locations != null) {
-            // untuk setiap data array di response
-            for (LocationModel r : locations){
+            // akan dipanggil fungsi untuk
+            // menunjukan jarak
+            r.Distance = r.calculateDistance(userCoordinate);
 
-                // akan dipanggil fungsi untuk
-                // menunjukan jarak
-                r.Distance = r.calculateDistance(userCoordinate);
-
-
-                // tampilkan marker lokasi yang terdekat berdasarkan rutenya yg paling pendek
-                showOnlyShortestRouting(new Waypoint(userCoordinate),
+            // tampilkan marker lokasi yang terdekat berdasarkan rutenya yg paling pendek
+            showOnlyShortestRouting(new Waypoint(userCoordinate),
                     new Waypoint(new GeoCoordinates(r.Latitude,r.Longitude)),new Unit<Boolean>(){
 
                         @Override
-                        public void invoke(Boolean o) {
+                        public void invoke(Boolean shorter) {
 
-                            // memanggil fungsi untuk membuat marker lokasi
-                            CustomMarker customMarker = createCustomMarker(context,r);
+                            // jika benar lokasi ini
+                            // punya jalus terpendek maka
+                            if (shorter){
 
-                            // tambahkan ke array marker
-                            markers.add(customMarker);
+                                // memanggil fungsi untuk membuat marker lokasi
+                                CustomMarker customMarker = createCustomMarker(context,r);
 
-                            // tampilkan marker dimap
-                            mapView.getMapScene().addMapMarker(customMarker.marker);
+                                // tambahkan ke array marker
+                                markers.add(customMarker);
 
-                            // tampilkan marker dimap
-                            mapView.addMapOverlay(customMarker.markerOverlay);
+                                // tampilkan marker dimap
+                                mapView.getMapScene().addMapMarker(customMarker.marker);
 
-                            // arahkan kamera ke marker
-                            // data lokasi wisata kuliner
-                            // posisi pertama
-                            mapView.getCamera().setTarget(new GeoCoordinates(r.Latitude,r.Longitude));
+                                // tampilkan marker dimap
+                                mapView.addMapOverlay(customMarker.markerOverlay);
 
-                            // setting tingkatan zoom kamera
-                            mapView.getCamera().setZoomLevel(ZOOM_LEVEL);
+                                // arahkan kamera ke marker
+                                // data lokasi wisata kuliner
+                                // posisi pertama
+                                mapView.getCamera().setTarget(new GeoCoordinates(r.Latitude,r.Longitude));
+
+                                // setting tingkatan zoom kamera
+                                mapView.getCamera().setZoomLevel(ZOOM_LEVEL);
+
+                            }
                         }
-                });
-            }
+                    });
+        }
+    }
+
+
+    @Override
+    public void onGetListLocation(@Nullable ArrayList<LocationModel> locations) {
+        if (locations != null) {
+            validateLocation(locations);
         }
     }
 
@@ -637,7 +652,14 @@ public class MapActivity extends AppCompatActivity implements MapActivityContrac
         location.CurrentLongitude = userCoordinate.longitude;
 
         // panggil fungsi presenter
-        presenter.getListLocation(location,loading );
+        // untuk memanggil data lokasi
+        // online
+        //presenter.getListLocation(location,loading);
+
+        // panggil data lokasi mcd
+        // yang telah di harcode di code
+        // di /model/location/LocationData.java
+        validateLocation(getLocations());
     }
 
     // fungsi untuk menghilangkan marker

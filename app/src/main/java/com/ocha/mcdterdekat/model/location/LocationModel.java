@@ -43,6 +43,7 @@ public class LocationModel extends BaseModel {
 
     // variabel id
     // dengan nama untuk serialisasi
+    @SerializedName("distance")
     public double Distance = 1.0;
 
     // konstruktor standar
@@ -59,27 +60,26 @@ public class LocationModel extends BaseModel {
     // konstruktor dengan
     // 3 parameter
     public LocationModel(int id, String name, String address, double distance) {
-        Id = id;
-        Name = name;
-        Address = address;
-        Distance = distance;
-    }
-
-    public LocationModel(int id, String name, String address, String description, double latitude, double longitude, String urlImage, double distance) {
-        Id = id;
-        Name = name;
-        Address = address;
-        Description = description;
-        Latitude = latitude;
-        Longitude = longitude;
-        UrlImage = urlImage;
-        Distance = distance;
+        this.Id = id;
+        this.Name = name;
+        this.Address = address;
+        this.Distance = distance;
     }
 
     // konstruktor dengan
     // banyak parameter
     // sesuai dengan jumlah
     // variabel di class ini
+    public LocationModel(int id, String name, String address, String description, double latitude, double longitude, String urlImage, double distance) {
+        this.Id = id;
+        this.Name = name;
+        this.Address = address;
+        this.Description = description;
+        this.Latitude = latitude;
+        this.Longitude = longitude;
+        this.UrlImage = urlImage;
+        this.Distance = distance;
+    }
 
 
     // ini adalah fungsi yg digunakan

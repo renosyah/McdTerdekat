@@ -8,13 +8,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.gson.Gson;
 import com.ocha.mcdterdekat.R;
+import com.ocha.mcdterdekat.model.location.LocationModel;
 import com.ocha.mcdterdekat.ui.activity.about.AboutActivity;
 import com.ocha.mcdterdekat.ui.activity.map.MapActivity;
+
+import static com.ocha.mcdterdekat.model.location.LocationData.getLocations;
 
 public class HomeActivity extends AppCompatActivity {
 
