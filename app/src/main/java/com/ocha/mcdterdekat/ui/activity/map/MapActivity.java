@@ -71,6 +71,7 @@ import static com.ocha.mcdterdekat.util.StaticVariabel.ZOOM_LEVEL;
 import static com.ocha.mcdterdekat.util.StaticVariabel.createCustomMarker;
 import static com.ocha.mcdterdekat.util.StaticVariabel.createLocationMarker;
 import static com.ocha.mcdterdekat.util.StaticVariabel.createLocationMarkerWithText;
+import static com.ocha.mcdterdekat.util.StaticVariabel.createUserCustomMarker;
 import static com.ocha.mcdterdekat.util.StaticVariabel.createUserMarker;
 
 public class MapActivity extends AppCompatActivity implements MapActivityContract.View {
@@ -110,7 +111,7 @@ public class MapActivity extends AppCompatActivity implements MapActivityContrac
 
     // deklarasi user marker
     // yg akan dipakai di map
-    private MapMarker userMarker;
+    private CustomMarker userMarker;
 
     private ImageView userLocation;
     private ImageView navgiation;
@@ -451,19 +452,24 @@ public class MapActivity extends AppCompatActivity implements MapActivityContrac
                         // jika marker user tidak null
                         if (userMarker != null){
 
+                            mapView.removeMapOverlay(userMarker.markerOverlay);
+
                             // hapus marker user
-                            mapView.getMapScene().removeMapMarker(userMarker);
+                            mapView.getMapScene().removeMapMarker(userMarker.marker);
 
                             // kosongkan marker user
                             userMarker = null;
                         }
 
-                        // inisialisasi marker user
-                        userMarker = createUserMarker(context,userCoordinate);
+                        // memanggil fungsi untuk membuat marker lokasi user
+                        userMarker = createUserCustomMarker(context, "User",userCoordinate);
 
+                        // tampilkan marker dimap
+                        mapView.getMapScene().addMapMarker(userMarker.marker);
+
+                        // tampilkan marker dimap
+                        mapView.addMapOverlay(userMarker.markerOverlay);
                         // tambahkan marker user
-                        // ke mapview
-                        mapView.getMapScene().addMapMarker(userMarker);
 
                         // jika terjadi exception
                         // di hiraukan aja

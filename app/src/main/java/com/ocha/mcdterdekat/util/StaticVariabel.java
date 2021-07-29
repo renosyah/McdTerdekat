@@ -43,6 +43,9 @@ public class StaticVariabel {
         return new CustomMarker(createLocationMarkerWithText(c, location),createLocationMarker(c, location));
     }
 
+    public static CustomMarker createUserCustomMarker(Context c, String name, GeoCoordinates location){
+        return new CustomMarker(createUserLocationMarkerWithText(c, name, location),createUserMarker(c,location));
+    }
     // fungsi untuk membuat marker
     // untuk wisata kuliner dengan 3 parameter
     public static MapOverlay<View> createLocationMarkerWithText(Context c, LocationModel location){
@@ -53,6 +56,19 @@ public class StaticVariabel {
 
         GeoCoordinates geoCoordinates = new GeoCoordinates(location.Latitude,location.Longitude);
         MapOverlay<View> mapOverlay = new MapOverlay<>(v, geoCoordinates);
+
+        return mapOverlay;
+    }
+
+    // fungsi untuk membuat marker user
+    // untuk wisata kuliner dengan 3 parameter
+    public static MapOverlay<View> createUserLocationMarkerWithText(Context c, String name, GeoCoordinates location){
+
+        View v = ((Activity) c).getLayoutInflater().inflate(R.layout.location_marker,null);
+        TextView textView = v.findViewById(R.id.location_name_textview);
+        textView.setText(name);
+
+        MapOverlay<View> mapOverlay = new MapOverlay<>(v, location);
 
         return mapOverlay;
     }
@@ -102,7 +118,7 @@ public class StaticVariabel {
 
     // fungsi untuk membuat marker
     // untuk posisi user dengan 3 parameter
-    public static MapMarker createUserMarker(Context c,GeoCoordinates coordinates){
+    public static MapMarker createUserMarker(Context c, GeoCoordinates coordinates){
 
         // membuat instance marker
         MapMarker defaultMarker = new MapMarker(coordinates);
